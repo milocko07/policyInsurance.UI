@@ -7,11 +7,10 @@ export class AuthGuard  {
     constructor(private jwtHelper: JwtHelper, private router: Router) {
   }
   canActivate() {
-      debugger;
-    let token = localStorage.getItem("jwt");
+    const token = localStorage.getItem('jwt');
 
     if (token && !this.jwtHelper.isTokenExpired(token)) {
-      console.log(this.jwtHelper.decodeToken(token));
+      //console.log(this.jwtHelper.decodeToken(token));
       return true;
     }
     this.router.navigate(['login']);

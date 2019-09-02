@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -23,6 +26,11 @@ import { RegisterComponent } from './views/register/register.component';
 
 import { AuthGuard } from './guards/auth-guard.service';
 import { JwtHelper } from 'angular2-jwt';
+
+import { Constants } from './core/Constants/Constants';
+
+import { CommonHelper } from './utilities/CommonHelper.service';
+import { LoginService } from './services/login.Service';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -57,7 +65,10 @@ import { ChartsModule } from 'ng2-charts';
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    CommonModule,
+    FormsModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
@@ -70,7 +81,10 @@ import { ChartsModule } from 'ng2-charts';
   providers: [JwtHelper, AuthGuard, {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }],
-  bootstrap: [ AppComponent ]
+  },
+  Constants,
+  CommonHelper,
+  LoginService],
+    bootstrap: [ AppComponent ]
 })
 export class AppModule { }
