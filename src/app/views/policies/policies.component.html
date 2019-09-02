@@ -1,17 +1,18 @@
 
 <div class="animated fadeIn">
-    <form #creationForm="ngForm" (ngSubmit)="create(creationForm)">
+    <form [formGroup]="registerForm" (ngSubmit)="save()">
         <div class="row" >
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-1">
-                        <button type="button" *ngIf="!isCreating" class="btn btn-block btn-primary" (click)="activateCreation($event)">Add Policy</button>
-                        <button type="submit" *ngIf="isCreating" class="btn btn-block btn-primary">Save</button>
+                        <button type="button" *ngIf="!isCreating && !isEditing" class="btn btn-block btn-primary" (click)="activateCreation($event)">Add Policy</button>
+                        <button type="submit" id="creation" *ngIf="isCreating" class="btn btn-block btn-primary">Save</button>
+                        <button type="submit" id="edition" *ngIf="isEditing" class="btn btn-block btn-primary">Save</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="!isCreating">
+        <div class="row" *ngIf="!isCreating && !isEditing">
         <div class="col-lg-6">
             <div class="card">
             <div class="card-header">
@@ -24,7 +25,13 @@
                     <th>Name</th>
                     <th>Type Coverage</th>
                     <th>Risk</th>
-                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Opening</th>
+                    <th>Coverage</th>
+                    <th>Time Coverage</th>
+                    <th>Price</th>
+                    <th></th>
+                    <th></th>
                     </tr>
                 </thead>
                 <tbody *ngFor="let policy of policyList">
@@ -32,8 +39,16 @@
                         <td>{{policy.name}}</td>
                         <td>{{policy.type}}</td>
                         <td>{{policy.risk}}</td>
+                        <td>{{policy.description}}</td>
+                        <td>{{policy.opening}}</td>
+                        <td>{{policy.coverage}}</td>
+                        <td>{{policy.timeCoverage}}</td>
+                        <td>{{policy.price}}</td>
                         <td>
-                        <span class="badge badge-success">Active</span>
+                            <span class="badge badge-success" (click)="remove(policy.id)">Delete</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-success" (click)="enableEdition(policy.id)">Edit</span>
                         </td>
                     </tr>
                 </tbody>
@@ -42,7 +57,7 @@
             </div>
         </div>
         </div>
-        <div class="row" *ngIf="isCreating">
+        <div class="row" *ngIf="isCreating || isEditing">
             <div class="card-body">
                 <div class="row align-items-center">
                     <div class="col-sm-12">
@@ -54,32 +69,73 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="newPolicy.name" placeholder="Policy Name">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" formControlName="name" id="name" placeholder="Policy Name" maxlength="60"
+                                                 [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                                        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                            <div *ngIf="f.name.errors.required">Name is required</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                     <label for="description">Description</label>
-                                    <input type="text" class="form-control" id="description" name="description" [(ngModel)]="newPolicy.description" placeholder="Policy Description">
+                                    <input type="text" class="form-control" id="description" formControlName="description" name="description"  placeholder="Policy Description" maxlength="60">
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group row">
-                                    <label class="col-md-2 col-form-label" for="date-input">Opening</label>
-                                    <div class="col-md-3">
-                                        <input class="form-control" id="opening" type="date" name="opening" [(ngModel)]="newPolicy.opening" placeholder="date">
-                                        <span class="help-block">Please enter a valid date</span>
-                                    </div>
+                                        <label class="col-md-2 col-form-label" for="date-input">Opening</label>
+                                        <div class="col-md-4">
+                                            <input type="date" class="form-control" formControlName="opening" id="opening" name="opening" placeholder="Opening date" 
+                                                    [ngClass]="{ 'is-invalid': submitted && f.opening.errors }" />
+                                            <div *ngIf="submitted && f.opening.errors" class="invalid-feedback">
+                                                <div *ngIf="f.opening.errors.required">Date is required</div>
+                                            </div>
+                                            <span class="help-block">Please enter a valid date</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group row">
-                                    <label class="col-md-3 col-form-label" for="coverage">Coverage Percent</label>
-                                    <div class="col-md-9">
-                                        <input class="form-control" id="coverage" type="number" name="coverage" [(ngModel)]="newPolicy.coverage" placeholder="coverage">
+                                        <label class="col-md-3 col-form-label" for="coverage">Coverage Percent</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" formControlName="coverage" id="coverage" name="coverage" placeholder="Coverage"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.coverage.errors }" />
+                                            <div *ngIf="submitted && f.coverage.errors" class="invalid-feedback">
+                                                <div *ngIf="f.coverage.errors.required">Coverage is required</div>
+                                                <div *ngIf="f.coverage.errors.maxlength">Coverage must be less than 3 characters</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="timeCoverage">Time Coverage</label>
+                                        <div class="col-md-12">
+                                            <input type="number" class="form-control" formControlName="timeCoverage" id="timeCoverage" name="timeCoverage" placeholder="Policy Duration (month)"
+                                                    [ngClass]="{ 'is-invalid': submitted && f.timeCoverage.errors }" />
+                                            <div *ngIf="submitted && f.timeCoverage.errors" class="invalid-feedback">
+                                                <div *ngIf="f.timeCoverage.errors.required">Time Coverage is required</div>
+                                                <div *ngIf="f.timeCoverage.errors.maxlength">Time Coverage must be less than 3 characters</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="price">Price</label>
+                                    <div class="col-md-12">
+                                        <input type="number" class="form-control" formControlName="price" id="price" name="price" placeholder="Price"
+                                                [ngClass]="{ 'is-invalid': submitted && f.price.errors }" />
+                                        <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                                            <div *ngIf="f.price.errors.required">Price is required</div>
+                                            <div *ngIf="f.price.errors.maxlength">Price must be less than 12 characters</div>
+                                        </div>
                                     </div>
                                     </div>
                                 </div>
@@ -87,40 +143,38 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group row">
-                                        <label for="timeCoverage">Time Coverage</label>
-                                    <div class="col-md-3">
-                                        <input class="form-control" id="timeCoverage" type="number" name="timeCoverage" [(ngModel)]="newPolicy.timeCoverage" placeholder="Policy Duration (month)">
-                                    </div>
+                                        <label class="col-md-3 col-form-label" for="type">Type of Coverage</label>
+                                        <div class="col-md-12">
+                                            <select class="form-control" formControlName="type" id="type" name="type">
+                                                <option value="1">Earthquake</option>
+                                                <option value="2">Fire</option>
+                                                <option value="3">Robbery</option>
+                                                <option value="4">Lost</option>
+                                            </select>
+                                            <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+                                                <div *ngIf="f.type.errors.required">Type is required</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group row">
-                                        <label for="price">Price</label>
-                                    <div class="col-md-9">
-                                        <input class="form-control" id="price" type="number" name="price" [(ngModel)]="newPolicy.price" placeholder="Price">
-                                    </div>
+                                        <label class="col-md-3 col-form-label" for="risk">Risk</label>
+                                        <div class="col-md-12">
+                                            <select class="form-control" formControlName="risk" id="risk" name="risk">
+                                                <option value="1">Low</option>
+                                                <option value="2">Medium</option>
+                                                <option value="3">Medium-High   </option>
+                                                <option value="4">High</option>
+                                            </select>
+                                            <div *ngIf="submitted && f.risk.errors" class="invalid-feedback">
+                                                <div *ngIf="f.risk.errors.required">Risk is required</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-sm-6">
-                                    <label for="ccmonth">Type of Coverage</label>
-                                    <select class="form-control" id="type" name="type" [(ngModel)]="newPolicy.type">
-                                        <option value="1">Earthquake</option>
-                                        <option value="2">Fire</option>
-                                        <option value="3">Robbery</option>
-                                        <option value="4">Lost</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-sm-6">
-                                    <label for="risk">Risk</label>
-                                    <select class="form-control" id="risk" name="risk" [(ngModel)]="newPolicy.risk">
-                                        <option value="1">Low</option>
-                                        <option value="2">Medium</option>
-                                        <option value="3">Medium-High   </option>
-                                        <option value="4">High</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
                         </div>

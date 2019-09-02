@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpService } from './http.service';
 import { PolicyResponseModel } from '../models/policies/policy.response.model';
 import { PolicyRequestModel } from '../models/policies/policy.request.model';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +25,15 @@ export class PolicyService {
         return this.http.get<PolicyResponseModel>(`${this.baseURL}${this.policyRoot}`);
     }
 
-    create(model: PolicyRequestModel): Observable<any>  {
-        return this.http.post<PolicyRequestModel, PolicyResponseModel>(`${this.baseURL}${this.policyRoot}`, model);
+    create(model: FormGroup): Observable<any>  {
+        return this.http.post<FormGroup, PolicyResponseModel>(`${this.baseURL}${this.policyRoot}`, model);
+    }
+
+    update(model: FormGroup): Observable<any>  {
+        return this.http.put<FormGroup, PolicyResponseModel>(`${this.baseURL}${this.policyRoot}`, model);
+    }
+
+    delete(id: number): Observable<any>  {
+        return this.http.delete<number, string>(`${this.baseURL}${this.policyRoot}`, id);
     }
 }

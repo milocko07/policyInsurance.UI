@@ -6,6 +6,8 @@ export class PolicyResponseModel {
     public coverage: number;
     public timeCoverage: number;
     public price: number;
+    public typeId: number;
     public type: string;
+    public riskId: number;
     public risk: string;
 }
