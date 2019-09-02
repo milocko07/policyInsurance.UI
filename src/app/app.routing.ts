@@ -57,6 +57,10 @@ export const routes: Routes = [
         loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
       },
       {
+        path: 'policies',
+        loadChildren: () => import('./views/policies/policies.module').then(m => m.PoliciesModule)
+      },
+      {
         path: 'buttons',
         loadChildren: () => import('./views/buttons/buttons.module').then(m => m.ButtonsModule), canActivate: [AuthGuard]
       },

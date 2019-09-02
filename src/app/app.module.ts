@@ -30,7 +30,6 @@ import { JwtHelper } from 'angular2-jwt';
 import { Constants } from './core/Constants/Constants';
 
 import { CommonHelper } from './utilities/CommonHelper.service';
-import { LoginService } from './services/login.Service';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -76,15 +75,14 @@ import { ChartsModule } from 'ng2-charts';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   providers: [JwtHelper, AuthGuard, {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   },
   Constants,
-  CommonHelper,
-  LoginService],
+  CommonHelper],
     bootstrap: [ AppComponent ]
 })
 export class AppModule { }

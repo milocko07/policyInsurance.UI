@@ -1,26 +1,26 @@
 import { Constants } from '../core/constants/Constants';
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
+
 import { Observable } from 'rxjs/Observable';
 import { HttpService } from './http.service';
-import { LoginResponseModel } from '../models/security/login.response.model';
+import { PolicyResponseModel } from '../models/policies/policy.response.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoginService {
+export class PolicyService {
 
     private readonly baseURL: string;
-    private readonly securityUrl: string;
+    private readonly policyRoot: string;
     public readonly constants: Constants;
 
     constructor(private readonly http: HttpService) {
         this.baseURL = Constants.baseURL;
-        this.securityUrl = Constants.securityRoot;
+        this.policyRoot = Constants.policyRoot;
     }
 
     // Calls the api to login the user.
-    login(credentials: string): Observable<any>  {
-        return this.http.post<string, LoginResponseModel>(`${this.baseURL}${this.securityUrl}`, credentials, new HttpParams());
+    getList(): Observable<any>  {
+        return this.http.get<PolicyResponseModel>(`${this.baseURL}${this.policyRoot}`);
     }
 }

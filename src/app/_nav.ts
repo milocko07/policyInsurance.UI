@@ -40,6 +40,11 @@ export const navItems: NavData[] = [
     }
   },
   {
+    name: 'Policies',
+    url: '/policies',
+    icon: 'icon-pencil'
+  },
+  {
     title: true,
     name: 'Theme'
   },

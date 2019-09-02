@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { LoginService } from './../../services/login.Service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-dashboard',
