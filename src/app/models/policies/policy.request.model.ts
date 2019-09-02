@@ -1,5 +1,4 @@
-export class PolicyResponseModel {
-    public id: number;
+export class PolicyRequestModel {
     public name: string;
     public description: number;
     public opening: Date;
