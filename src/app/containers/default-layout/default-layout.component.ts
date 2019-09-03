@@ -36,4 +36,9 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.changes.disconnect();
   }
+
+  logOut() {
+    localStorage.removeItem('jwt');
+    window.location.href = 'login';
+  }
 }
