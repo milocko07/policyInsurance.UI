@@ -107,6 +107,7 @@
                                             <div *ngIf="submitted && f.coverage.errors" class="invalid-feedback">
                                                 <div *ngIf="f.coverage.errors.required">Coverage is required</div>
                                                 <div *ngIf="f.coverage.errors.maxlength">Coverage must be less than 3 characters</div>
+                                                <div *ngIf="f.coverage.errors.smallerThan">Coverage must must not be more than 50 percent when the risk is high</div>
                                             </div>
                                         </div>
                                     </div>

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { PolicyService } from '../../services/policies.service';
 import { PolicyResponseModel } from '../../models/policies/policy.response.model';
 import { PolicyRequestModel } from '../../models/policies/policy.request.model';
-import { NgForm, FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators, ValidationErrors  } from '@angular/forms';
 
 @Component({
   templateUrl: 'policies.component.html',
@@ -49,6 +49,11 @@ export class PoliciesComponent implements OnInit {
 
         // stop here if form is invalid
         if (this.registerForm.invalid) {
+            return;
+        }
+
+        if (+this.registerForm.value.risk === 4 && this.registerForm.value.coverage > 50) {
+            this.registerForm.controls.coverage.setErrors({smallerThan: 50});
             return;
         }
 
