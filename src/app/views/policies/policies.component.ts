@@ -41,7 +41,17 @@ export class PoliciesComponent implements OnInit {
     }
 
     activateCreation(event: Event) {
+        this.registerForm.controls.id.setValue('');
+        this.registerForm.controls.name.setValue('');
+        this.registerForm.controls.description.setValue('');
+        this.registerForm.controls.opening.setValue('');
+        this.registerForm.controls.coverage.setValue('');
+        this.registerForm.controls.timeCoverage.setValue('');
+        this.registerForm.controls.price.setValue('');
+        this.registerForm.controls.type.setValue('');
+        this.registerForm.controls.risk.setValue('');
         this.isCreating = true;
+        this.submitted = false;
     }
 
     save() {
