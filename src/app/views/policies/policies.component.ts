@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { PolicyService } from '../../services/policies.service';
 import { PolicyResponseModel } from '../../models/policies/policy.response.model';
-import { PolicyRequestModel } from '../../models/policies/policy.request.model';
 import { NgForm, FormBuilder, FormGroup, Validators, ValidationErrors  } from '@angular/forms';
 
 @Component({
   templateUrl: 'policies.component.html',
-  styleUrls: ["./policies.component.css"]
+  styleUrls: ['./policies.component.css']
 })
 export class PoliciesComponent implements OnInit {
 

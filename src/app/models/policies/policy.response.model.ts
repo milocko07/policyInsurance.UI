@@ -10,4 +10,5 @@ export class PolicyResponseModel {
     public type: string;
     public riskId: number;
     public risk: string;
+    public clientAssigned: string;
 }

@@ -1,0 +1,93 @@
+<div class="animated fadeIn">
+    <form [formGroup]="registerForm" (ngSubmit)="save()">
+
+        <div class="row" >
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-1">
+                        <button type="submit" id="assignation" *ngIf="isAssigning" class="btn btn-block btn-primary">Assign</button>
+                        <button type="submit" id="cancelation" *ngIf="isCanceling" class="btn btn-block btn-primary">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="!isAssigning && !isCanceling">
+            <div class="col-lg-7">
+                <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Existing Policies
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Name</th>
+                        <th>Type Coverage</th>
+                        <th>Risk</th>
+                        <th>Description</th>
+                        <th>Opening</th>
+                        <th>Coverage</th>
+                        <th>Time Coverage</th>
+                        <th>Price</th>
+                        <th>Client assigned</th>
+                        <th></th>
+                        <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let policy of policyList">
+                        <tr>
+                            <td>{{policy.name}}</td>
+                            <td>{{policy.type}}</td>
+                            <td>{{policy.risk}}</td>
+                            <td>{{policy.description}}</td>
+                            <td>{{policy.opening}}</td>
+                            <td>{{policy.coverage}}</td>
+                            <td>{{policy.timeCoverage}}</td>
+                            <td>{{policy.price}}</td>
+                            <td>{{policy.clientsAssigned}}</td>
+                            <td>
+                                <span class="badge badge-success" (click)="activateAssignation(policy.id)">Assign</span>
+                            </td>
+                            <td>
+                                <span class="badge badge-success" (click)="activateCancelation(policy.id)">Cancel</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="isAssigning || isCanceling">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Select client to assign the policy</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group row">
+                                            <label class="col-md-3 col-form-label" for="type">Client</label>
+                                            <div class="col-md-12">
+                                                <select class="form-control" formControlName="clientId" id="clientId" name="clientId">
+                                                    <option value="1">Client 01</option>
+                                                    <option value="2">Client 02</option>
+                                                </select>
+                                                <div *ngIf="submitted && f.clientId.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.clientId.errors.required">Client is required</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
